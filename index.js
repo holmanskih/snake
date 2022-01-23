@@ -1,12 +1,16 @@
+import {spawnCollectable} from "./collectable.js"
+
 const startButton = document.getElementById("start-button")
 const gameWindow = document.getElementById("game-window")
 const player = document.getElementById("player")
+const scoreElem = document.getElementById("score")
 
 // player
 const SPEED = 5
 const PLAYER_SIZE = 100
 let SPEED_MULT_X = 1
 let SPEED_MULT_Y = 1
+let score = 0
 
 const DIRECTION = {
     UP: "UP",
@@ -118,18 +122,28 @@ const movePlayerAnimation = (t) => {
         const r1 = {x: playerRect.bottom, y: playerRect.left}
 
         const collectable = document.getElementById('collectable')
-        const collectableRect = collectable.getBoundingClientRect()
+        if(collectable) {
+            const collectableRect = collectable.getBoundingClientRect()
 
-        const l2 = {x: playerRect.top, y: playerRect.right}
-        const r2 = {x: collectableRect.bottom, y: collectableRect.left}
+            const l2 = {x: playerRect.top, y: playerRect.right}
+            const r2 = {x: collectableRect.bottom, y: collectableRect.left}
+    
+            console.log(l1, r1)
+            console.log(l2, r2)
+    
+            const collides = isCollide(l1, r1, l2, r2)
+            if(collides) {
+                console.log('collides', collides)
+                const bonusElem = document.getElementById("collectable")
+                bonusElem.remove()
+                score++
+                scoreElem.innerText = score
 
-        console.log(l1, r1)
-        console.log(l2, r2)
-
-        const collides = isCollide(l1, r1, l2, r2)
-        console.log('collides', collides)
+                // create new bonus element
+                spawnCollectable()
+            }
+        }
         
-
     }
     window.requestAnimationFrame(movePlayerAnimation);
 }

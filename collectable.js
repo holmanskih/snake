@@ -2,7 +2,7 @@ const game = document.getElementById('game')
 
 const size = 50
 
-const spawnCollectable = () => {
+export const spawnCollectable = () => {
     const position = getRandomPosition()
     const collectable = createCollectableElem()
     collectable.style.left = `${position.x}px`
