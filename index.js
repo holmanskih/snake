@@ -125,7 +125,7 @@ const movePlayerAnimation = (t) => {
         if(collectable) {
             const collectableRect = collectable.getBoundingClientRect()
 
-            const l2 = {x: playerRect.top, y: playerRect.right}
+            const l2 = {x: collectableRect.top, y: collectableRect.right}
             const r2 = {x: collectableRect.bottom, y: collectableRect.left}
     
             console.log(l1, r1)
@@ -148,6 +148,7 @@ const movePlayerAnimation = (t) => {
     window.requestAnimationFrame(movePlayerAnimation);
 }
 
+// https://www.geeksforgeeks.org/find-two-rectangles-overlap/
 const isCollide = (l1, r1, l2, r2) => { 
     // To check if either rectangle is actually a line
             // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
@@ -171,6 +172,21 @@ const isCollide = (l1, r1, l2, r2) => {
                 return true;
         
     }
+
+const collisionResult1 = isCollide({x: -1, y:0}, {x: 1, y:1}, {x:0, y: -1}, {x: 0, y: 1})
+console.log(collisionResult1)
+
+const collisionResult2 = isCollide({x: -10, y:10}, {x: -5, y:5}, {x: -8, y: 8}, {x: -4, y: 4})
+console.log(collisionResult2)
+
+const collisionResult3 = isCollide({x: -10, y:10}, {x: -5, y:5}, {x: -4.9, y: 8}, {x: -0.9, y: 4})
+console.log(collisionResult3)
+
+const collisionResult4 = isCollide({x: 110, y:180}, {x: 120, y: 170}, {x: 110, y: 210}, {x: 120, y: 200})
+console.log(collisionResult4)
+
+const collisionResult5 = isCollide({x: 110, y:180}, {x: 120, y: 170}, {x: 100, y: 210}, {x: 110, y: 200})
+console.log(collisionResult5)
 
 const movePlayer = () => {
     setXPosition(0)
