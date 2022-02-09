@@ -20,6 +20,18 @@ class SnakePart {
         this.player.style.top = `${value}px`
         this.yPosition = value
     }
+
+    getOffsetLeft() {
+        return this.player.offsetLeft
+    }
+
+    getOffsetTop() {
+        return this.player.offsetTop
+    }
+
+    getPosition() {
+        return this.player.getBoundingClientRect()
+    }
 }
 
 export default SnakePart

@@ -1,4 +1,5 @@
 import SnakePart from "./snake.js"
+import Apple from "./apple.js"
 
 export const DIRECTION = {
     UP: "UP",
@@ -17,7 +18,7 @@ class Game {
         this.deltaFrameTimeSec = 144
 
         // snake player
-        this.snake = SnakePart()
+        this.snake = new SnakePart()
     }
 
     // getSize returns size of player screen
@@ -54,7 +55,7 @@ class Game {
             switch (this.direction) {
                 case DIRECTION.LEFT: {
                     moveHorizontal()
-                    if (player.offsetLeft <= -PLAYER_SIZE) {
+                    if (this.player.getOffsetLeft() <= -PLAYER_SIZE) {
                         this.snake.setXPosition(this.getSize())
                     }
                     break
@@ -62,14 +63,15 @@ class Game {
 
                 case DIRECTION.RIGHT: {
                     moveHorizontal()
-                    if (player.offsetLeft >= this.getSize()) {
+                    if (this.player.getOffsetLeft() >= this.getSize()) {
                         this.snake.setXPosition(0)
                     }
                     break
                 }
+                
                 case DIRECTION.UP: {
                     moveVertical()
-                    if (player.offsetTop <= -PLAYER_SIZE) {
+                    if (this.player.getOffsetTop() <= -PLAYER_SIZE) {
                         this.snake.setYPosition(this.getSize())
                     }
                     break
@@ -77,7 +79,7 @@ class Game {
 
                 case DIRECTION.DOWN: {
                     moveVertical()
-                    if (player.offsetLeft === 0) {
+                    if (this.player.getOffsetLeft() === 0) {
                         this.snake.setYPosition(0)
                     }
                     break
@@ -85,11 +87,21 @@ class Game {
             }
 
             ///track collision
-            const playerRect = player.getBoundingClientRect()
-            console.log('rect', playerRect)
+            const position = this.player.getPosition()
+            console.log('rect', position)
 
-            const l1 = { x: playerRect.top, y: playerRect.right }
-            const r1 = { x: playerRect.bottom, y: playerRect.left }
+            const l1 = { x: position.top, y: position.right }
+            const r1 = { x: position.bottom, y: position.left }
+
+            const apple = new Apple()
+            const isAppleExists = apple.isExist()
+
+            if(isAppleExists) {
+                const appleCollides = apple.collides()
+                if(appleCollides) {
+                    // TODO:
+                }
+            }
 
             const collectable = document.getElementById('collectable')
             if (collectable) {
