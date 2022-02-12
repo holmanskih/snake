@@ -1,6 +1,14 @@
 class Apple {
     constructor() {
+        this.size = 50
+
+
         this.elem = document.getElementById('collectable')
+        this.game = document.getElementById('game')
+    }
+
+    remove() {
+        this.elem.remove()
     }
 
     isExist() {
@@ -48,6 +56,46 @@ class Apple {
         }
 
         return true;
+    }
+
+    spawn() {
+        const position = this.getRandomPosition()
+        const collectable = this.createCollectableElem()
+        collectable.style.left = `${position.x}px`
+        collectable.style.top = `${position.y}px`
+    }
+
+    getRandomPosition() {
+        const rect = this.game.getBoundingClientRect()
+        
+        const height = rect.height 
+        const width = rect.width 
+    
+    
+        console.log(rect)
+    
+        let x = Math.floor(Math.random() * width + 1)
+    
+        let y = Math.floor(Math.random() * height + 1)
+    
+        if(x > this.size) {
+            x -= this.size
+        }
+    
+        if(y > this.size) {
+            y -= this.size
+        }
+    
+        return{x: x, y: y}
+    }
+
+    createCollectableElem = () => {
+        const elem = document.createElement('div')
+        elem.id = 'collectable'
+        elem.className = 'collectable'
+    
+        this.game.appendChild(elem)
+        return elem
     }
 }
 

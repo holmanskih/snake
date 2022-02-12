@@ -9,21 +9,37 @@ export const DIRECTION = {
 }
 
 class Game {
-    constructor() {
-        this.score = 0
-        this.direction = DIRECTION.LEFT // DIRECTION
+    constructor(score) {
+        this.score = score
+        //this.direction = DIRECTION.LEFT // DIRECTION
 
         // can be move to movePlayerAnimation
         this.lastFrameTimeSec = 0
         this.deltaFrameTimeSec = 144
+        
+
+        this.scoreElem = document.getElementById("score")
+        this.gameWindow = document.getElementById("game-window")
+        this.startButton = document.getElementById("start-button")
+        this.startButton.addEventListener('click', this.start)
 
         // snake player
         this.snake = new SnakePart()
     }
 
+    start() {
+        console.log(this)
+        this.closeGameWindow()
+        this.renderPlayer()
+    }
+
+    closeGameWindow() {
+        this.gameWindow.style.display = "none"
+    }
+    
     // getSize returns size of player screen
     getSize() {
-        switch (this.direction) {
+        switch (this.snake.direction) {
             case DIRECTION.LEFT:
             case DIRECTION.RIGHT: {
                 return window.innerWidth
@@ -34,25 +50,26 @@ class Game {
             }
 
             default: {
-                console.log("underfined direction case", this.direction)
+                console.log("underfined direction case", this.snake.direction)
             }
         }
     }
-
+    // renderPlayer = movePlayer
     renderPlayer() {
-        this.direction = DIRECTION.RIGHT
+        this.snake.direction = DIRECTION.RIGHT
         this.snake.setXPosition(0)
         this.snake.setYPosition(0)
         window.requestAnimationFrame(this.movePlayerAnimation);
     }
 
     movePlayerAnimation(t) {
+        console.log(this)
         const currFrameTimeSec = t * 1000
         if (currFrameTimeSec - this.lastFrameTimeSec >= this.deltaFrameTimeSec) {
 
-            console.log('direction', this.direction, 'x', this.snake.xPosition, 'y', this.snake.yPosition)
+            console.log('direction', this.snake.direction, 'x', this.snake.xPosition, 'y', this.snake.yPosition)
 
-            switch (this.direction) {
+            switch (this.snake.direction) {
                 case DIRECTION.LEFT: {
                     moveHorizontal()
                     if (this.player.getOffsetLeft() <= -PLAYER_SIZE) {
@@ -99,35 +116,46 @@ class Game {
             if(isAppleExists) {
                 const appleCollides = apple.collides()
                 if(appleCollides) {
-                    // TODO:
+                    this.respawnApple(apple)
                 }
             }
 
-            const collectable = document.getElementById('collectable')
-            if (collectable) {
-                const collectableRect = collectable.getBoundingClientRect()
+            // const collectable = document.getElementById('collectable')
+            // if (collectable) {
+            //     const collectableRect = collectable.getBoundingClientRect()
 
-                const l2 = { x: collectableRect.top, y: collectableRect.right }
-                const r2 = { x: collectableRect.bottom, y: collectableRect.left }
+            //     const l2 = { x: collectableRect.top, y: collectableRect.right }
+            //     const r2 = { x: collectableRect.bottom, y: collectableRect.left }
 
-                console.log(l1, r1)
-                console.log(l2, r2)
+            //     console.log(l1, r1)
+            //     console.log(l2, r2)
 
-                const collides = isCollide(l1, r1, l2, r2)
-                if (collides) {
-                    console.log('collides', collides)
-                    const bonusElem = document.getElementById("collectable")
-                    bonusElem.remove()
-                    score++
-                    scoreElem.innerText = score
+            //     const collides = isCollide(l1, r1, l2, r2)
+            //     if (collides) {
+            //         console.log('collides', collides)
+            //         const bonusElem = document.getElementById("collectable")
+            //         bonusElem.remove()
+            //         score++
+            //         scoreElem.innerText = score
 
-                    // create new bonus element
-                    spawnCollectable()
-                }
-            }
+            //         // create new bonus element
+            //         spawnCollectable()
+            //     }
+            // }
 
         }
-        window.requestAnimationFrame(movePlayerAnimation);
+        window.requestAnimationFrame(this.movePlayerAnimation);
+    }
+
+    respawnApple(currentApple) {
+        currentApple.remove()
+        this.updateScore()
+        currentApple.spawn()
+    }
+
+    updateScore() {
+        this.score++
+        this.scoreElem.innerText = this.score
     }
 }
 
