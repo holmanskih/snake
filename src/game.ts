@@ -3,8 +3,8 @@ import {Apple} from "./apple.js"
 
 export class Game {
     private score: number;
-    private lastFrameTimeSec: number;
-    private deltaFrameTimeSec: number;
+    private lastFrameTimeMs: number;
+    private deltaFrameTimeMs: number;
 
     private scoreElem: HTMLDivElement;
     private gameWindow: HTMLDivElement;
@@ -12,12 +12,12 @@ export class Game {
 
     private snake: SnakePart;
 
-    constructor(score: number) {
+    constructor(score: number, deltaFrameTimeMs: number) {
         this.score = score
 
         // can be move to movePlayerAnimation
-        this.lastFrameTimeSec = 0
-        this.deltaFrameTimeSec = 144
+        this.lastFrameTimeMs = 0
+        this.deltaFrameTimeMs = deltaFrameTimeMs
 
         this.scoreElem = document.getElementById("score") as HTMLDivElement
         this.gameWindow = document.getElementById("game-window") as HTMLDivElement
@@ -63,8 +63,11 @@ export class Game {
     }
 
     private movePlayerAnimation(t: DOMHighResTimeStamp): void {
-        const currFrameTimeSec = t * 1000
-        if (currFrameTimeSec - this.lastFrameTimeSec >= this.deltaFrameTimeSec) {
+        const currFrameTimeMs = t
+        if (currFrameTimeMs - this.lastFrameTimeMs >= this.deltaFrameTimeMs) {
+            console.log('delta', (currFrameTimeMs - this.lastFrameTimeMs)/1000);
+            
+            this.lastFrameTimeMs = t
             switch (this.snake.direction) {
                 case Direction.Left: {
                     this.snake.moveHorizontal()

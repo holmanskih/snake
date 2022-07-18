@@ -1,3 +1,5 @@
+import { getScreenRatio } from "./utils.js";
+
 enum Direction {
     Right,
     Left,
@@ -26,7 +28,7 @@ class SnakePart {
 
     public constructor(speed: number, size: number, speedMult: number) {
         this.speed = speed
-        this.size = size
+        this.size = size * getScreenRatio() // scalable player size with dependency on the screen ratio
         this.speedMultX = speedMult
         this.speedMultY = speedMult
         this.direction = Direction.Right
@@ -35,6 +37,9 @@ class SnakePart {
         this.yPosition = 0
 
         this.player = document.getElementById("player") as HTMLDivElement
+        this.player.style.width = `${size}px`
+        this.player.style.height = `${size}px`
+        
 
         window.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboardMovementControl(e))
     }
@@ -63,12 +68,12 @@ class SnakePart {
 
     public moveVertical(): void {
         const topRaw = this.player.style.top.substr(0, this.player.style.top.length-2)
-        this.player.style.top = `${Number(topRaw) + this.speed * this.speedMultY}px`
+        this.player.style.top = `${Number(topRaw) + (this.size/2) * this.speedMultY}px`
     }
 
     public moveHorizontal(): void {
         const leftRaw = this.player.style.left.substr(0, this.player.style.left.length-2)
-        this.player.style.left = `${Number(leftRaw) + this.speed * this.speedMultX}px`
+        this.player.style.left = `${Number(leftRaw) + (this.size /2) * this.speedMultX }px`
     }
 
     private handleKeyboardMovementControl(e: KeyboardEvent): void {
