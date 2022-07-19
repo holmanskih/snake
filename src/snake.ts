@@ -1,3 +1,4 @@
+import { Position } from "./apple.js";
 import { SnakePart } from "./snakePart.js";
 
 export class Snake {
@@ -24,4 +25,21 @@ export class Snake {
         this.parts.push(growPart)
     }
 
+    public move(): void {
+        for(let i = 0; i < this.parts.length; i++) {
+            this.parts[i].move()
+        }
+    }
+
+    public initRender(): void {
+        this.getFirstPart().initRender()
+    }
+
+    private getFirstPart(): SnakePart {
+        return this.parts[0]
+    }
+
+    public getHeadPosition(): DOMRect {
+        return this.getFirstPart().getPosition()
+    }
 }

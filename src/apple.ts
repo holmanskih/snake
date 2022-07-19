@@ -1,4 +1,4 @@
-type Posion = {
+export type Position = {
     x: number
     y: number
 }
@@ -32,17 +32,17 @@ export class Apple {
     }
 
     // r1, l2 - snake coordinates (vectors)
-    public collides(r1: Posion, l1: Posion): boolean {
+    public collides(r1: Position, l1: Position): boolean {
         const pos = this.getPosition()
-        const l2: Posion = { x: pos.top, y: pos.right }
-        const r2: Posion = { x: pos.bottom, y: pos.left }
+        const l2: Position = { x: pos.top, y: pos.right }
+        const r2: Position = { x: pos.bottom, y: pos.left }
 
         const collideStatus = this.isCollide(l1, r1, l2, r2)
         return collideStatus
     }
 
     // https://www.geeksforgeeks.org/find-two-rectangles-overlap/
-    private isCollide(l1: Posion, r1: Posion, l2: Posion, r2: Posion): boolean {
+    private isCollide(l1: Position, r1: Position, l2: Position, r2: Position): boolean {
         // To check if either rectangle is actually a line
         // For example : l1 ={-1,0} r1={1,1} l2={0,-1} r2={0,1}
 
@@ -72,7 +72,7 @@ export class Apple {
         collectable.style.top = `${position.y}px`
     }
 
-    private getRandomPosition(): Posion {
+    private getRandomPosition(): Position {
         const rect = this.game.getBoundingClientRect()
         const height = rect.height 
         const width = rect.width 

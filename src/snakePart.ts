@@ -44,6 +44,12 @@ class SnakePart {
         window.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboardMovementControl(e))
     }
 
+    public initRender(): void {
+        this.direction = Direction.Right
+        this.setXPosition(0)
+        this.setYPosition(0)
+    }
+
     public setXPosition(value: number): void {
         this.player.style.left = `${value}px`
         this.xPosition = value
@@ -74,6 +80,60 @@ class SnakePart {
     public moveHorizontal(): void {
         const leftRaw = this.player.style.left.substr(0, this.player.style.left.length-2)
         this.player.style.left = `${Number(leftRaw) + (this.size /2) * this.speedMultX }px`
+    }
+
+    public move(): void {
+        switch (this.direction) {
+            case Direction.Left: {
+                this.moveHorizontal()
+                if (this.getOffsetLeft() <= -this.size) {
+                    this.setXPosition(this.getMoveDirection())
+                }
+                break
+            }
+
+            case Direction.Right: {
+                this.moveHorizontal()
+                if (this.getOffsetLeft() >= this.getMoveDirection()) {
+                    this.setXPosition(0)
+                }
+                break
+            }
+            
+            case Direction.Up: {
+                this.moveVertical()
+                if (this.getOffsetTop() <= -this.size) {
+                    this.setYPosition(this.getMoveDirection())
+                }
+                break
+            }
+
+            case Direction.Down: {
+                this.moveVertical()
+                if (this.getOffsetLeft() === 0) {
+                    this.setYPosition(0)
+                }
+                break
+            }
+        }
+    }
+
+    private getMoveDirection(): number {
+        switch (this.direction) {
+            case Direction.Left:
+            case Direction.Right: {
+                return window.innerWidth
+            }
+            case Direction.Up:
+            case Direction.Down: {
+                return window.innerHeight
+            }
+
+            default: {
+                console.log("underfined direction case", this.direction)
+                return 0
+            }
+        }
     }
 
     private handleKeyboardMovementControl(e: KeyboardEvent): void {
