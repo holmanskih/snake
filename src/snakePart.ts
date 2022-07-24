@@ -1,4 +1,5 @@
 import { getScreenRatio } from "./utils.js";
+import { Position } from "./apple.js";
 
 enum Direction {
     Right,
@@ -15,31 +16,30 @@ enum Keyboard {
 }
 
 class SnakePart {
-    public speed: number;
     public size: number;
     public speedMultX: number;
     public speedMultY: number;
     public direction: Direction;
 
-    private xPosition: number;
-    private yPosition: number;
+    public readonly position: Position;
 
     private player: HTMLDivElement
 
-    public constructor(speed: number, size: number, speedMult: number) {
-        this.speed = speed
+    public constructor(position: Position, direction: Direction, size: number, speedMult: number) {
         this.size = size * getScreenRatio() // scalable player size with dependency on the screen ratio
         this.speedMultX = speedMult
         this.speedMultY = speedMult
-        this.direction = Direction.Right
+        this.direction = direction
+        this.position = position
 
-        this.xPosition = 0
-        this.yPosition = 0
-
-        this.player = document.getElementById("player") as HTMLDivElement
+        // create player part html element
+        this.player = document.createElement("div")
+        this.player.className = "player"
         this.player.style.width = `${size}px`
         this.player.style.height = `${size}px`
-        
+
+        const rootElement = document.getElementById("game") as HTMLDivElement
+        rootElement.appendChild(this.player)
 
         window.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboardMovementControl(e))
     }
@@ -52,12 +52,12 @@ class SnakePart {
 
     public setXPosition(value: number): void {
         this.player.style.left = `${value}px`
-        this.xPosition = value
+        this.position.x = value
     }
     
     public setYPosition(value: number): void {
         this.player.style.top = `${value}px`
-        this.yPosition = value
+        this.position.y = value
     }
 
     public getOffsetLeft(): number {
@@ -74,12 +74,18 @@ class SnakePart {
 
     public moveVertical(): void {
         const topRaw = this.player.style.top.substr(0, this.player.style.top.length-2)
-        this.player.style.top = `${Number(topRaw) + (this.size/2) * this.speedMultY}px`
+        const nextPositionY = Number(topRaw) + (this.size/2) * this.speedMultY
+
+        this.player.style.top = `${nextPositionY}px`
+        this.position.y = nextPositionY
     }
 
     public moveHorizontal(): void {
         const leftRaw = this.player.style.left.substr(0, this.player.style.left.length-2)
-        this.player.style.left = `${Number(leftRaw) + (this.size /2) * this.speedMultX }px`
+        const nextPositionX = Number(leftRaw) + (this.size /2) * this.speedMultX
+
+        this.player.style.left = `${nextPositionX}px`
+        this.position.x = nextPositionX
     }
 
     public move(): void {
@@ -162,7 +168,7 @@ class SnakePart {
             }
             
             default: {
-                console.log('undefined keyboard event')
+                console.log("undefined keyboard event")
             }
         }
     }

@@ -1,8 +1,8 @@
 import { Position } from "./apple.js";
-import { SnakePart } from "./snakePart.js";
+import { Direction, SnakePart } from "./snakePart.js";
 
 export class Snake {
-    private speed: number;
+    // private speed: number;
     private size: number;
     private speedMult: number;
 
@@ -11,17 +11,19 @@ export class Snake {
 
     private parts: SnakePart[] = []
 
-    constructor(speed: number, size: number, speedMult: number) {
-        this.speed = speed
+    constructor(size: number, speedMult: number) {
+        // this.speed = speed
         this.size = size
         this.speedMult = speedMult
 
-        const initialPart = new SnakePart(speed, size, speedMult)
+        const initialPart = new SnakePart({x: 0, y: 0}, Direction.Right, size, speedMult)
         this.parts.push(initialPart)
     }
 
     public grow(): void {
-        const growPart = new SnakePart(this.speed, this.size, this.speedMult)
+        const tail = this.getTail()
+        const nextPartX = tail.position.x - (this.size / 2)
+        const growPart = new SnakePart({x: nextPartX, y: tail.position.y}, tail.direction, this.size, this.speedMult)
         this.parts.push(growPart)
     }
 
@@ -32,14 +34,18 @@ export class Snake {
     }
 
     public initRender(): void {
-        this.getFirstPart().initRender()
+        this.getHead().initRender()
     }
 
-    private getFirstPart(): SnakePart {
+    private getTail(): SnakePart {
+        return this.parts[this.parts.length-1]
+    }
+
+    private getHead(): SnakePart {
         return this.parts[0]
     }
 
     public getHeadPosition(): DOMRect {
-        return this.getFirstPart().getPosition()
+        return this.getHead().getPosition()
     }
 }

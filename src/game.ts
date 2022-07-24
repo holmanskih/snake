@@ -26,7 +26,7 @@ export class Game {
         this.startButton.addEventListener('click', () => this.start())
 
         // snake player
-        this.snake = new Snake(5, 100, 1)
+        this.snake = new Snake(100, 1)
     }
 
     private start(): void {
@@ -66,11 +66,14 @@ export class Game {
         if(apple.isExist()) {
             if(apple.collides(r1, l1)) {
                 this.respawnApple(apple)
+                this.snake.grow()
             }
         } else {
             apple.spawn()
         }
     }
+
+
 
     private respawnApple(currentApple: Apple) {
         currentApple.remove()
