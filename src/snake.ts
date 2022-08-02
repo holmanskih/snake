@@ -24,6 +24,7 @@ export class Snake {
         const tail = this.getTail()
         const nextPartX = tail.position.x - (this.size / 2)
         const growPart = new SnakePart({x: nextPartX, y: tail.position.y}, tail.direction, this.size, this.speedMult)
+        growPart.render() // update css position
         this.parts.push(growPart)
     }
 

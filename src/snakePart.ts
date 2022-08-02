@@ -50,6 +50,11 @@ class SnakePart {
         this.setYPosition(0)
     }
 
+    public render(): void {
+        this.setXPosition(this.position.x)
+        this.setYPosition(this.position.y)
+    }
+
     public setXPosition(value: number): void {
         this.player.style.left = `${value}px`
         this.position.x = value

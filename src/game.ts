@@ -1,4 +1,3 @@
-import {Direction} from "./snakePart.js"
 import {Apple} from "./apple.js"
 import { Snake } from "./snake.js";
 
