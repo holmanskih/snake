@@ -23,8 +23,6 @@ export class Apple {
             return true
         }
         return false
-        // return this.elem !== undefined
-        // return this.elem ? true : false
     }
 
     private getPosition(): DOMRect {

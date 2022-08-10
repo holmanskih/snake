@@ -1,5 +1,6 @@
 import {Apple} from "./apple.js"
-import { Snake } from "./snake.js";
+import { Snake, Vector, VectorDirection } from "./snake.js";
+import { Direction } from "./snakePart.js";
 
 export class Game {
     private score: number;
@@ -25,7 +26,11 @@ export class Game {
         this.startButton.addEventListener('click', () => this.start())
 
         // snake player
-        this.snake = new Snake(100, 1)
+        const initSnakeDirection: VectorDirection = {
+            value: Vector.Right,
+            direction: Direction.Right
+        }
+        this.snake = new Snake(100, initSnakeDirection)
     }
 
     private start(): void {

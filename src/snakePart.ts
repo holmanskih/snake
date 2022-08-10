@@ -1,5 +1,6 @@
 import { getScreenRatio } from "./utils.js";
 import { Position } from "./apple.js";
+import { VectorDirection } from "./snake.js";
 
 enum Direction {
     Right,
@@ -8,28 +9,15 @@ enum Direction {
     Down
 }
 
-enum Keyboard {
-    Up = "KeyW",
-    Right = "KeyD",
-    Down = "KeyS",
-    Left = "KeyA"
-}
-
 class SnakePart {
     public size: number;
-    public speedMultX: number;
-    public speedMultY: number;
-    public direction: Direction;
-
+    public vector: VectorDirection
     public readonly position: Position;
-
     private player: HTMLDivElement
 
-    public constructor(position: Position, direction: Direction, size: number, speedMult: number) {
+    public constructor(position: Position, vector: VectorDirection, size: number) {
         this.size = size * getScreenRatio() // scalable player size with dependency on the screen ratio
-        this.speedMultX = speedMult
-        this.speedMultY = speedMult
-        this.direction = direction
+        this.vector = vector
         this.position = position
 
         // create player part html element
@@ -40,12 +28,10 @@ class SnakePart {
 
         const rootElement = document.getElementById("game") as HTMLDivElement
         rootElement.appendChild(this.player)
-
-        window.addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyboardMovementControl(e))
     }
 
     public initRender(): void {
-        this.direction = Direction.Right
+        // this.direction = Direction.Right
         this.setXPosition(0)
         this.setYPosition(0)
     }
@@ -79,7 +65,7 @@ class SnakePart {
 
     public moveVertical(): void {
         const topRaw = this.player.style.top.substr(0, this.player.style.top.length-2)
-        const nextPositionY = Number(topRaw) + (this.size/2) * this.speedMultY
+        const nextPositionY = Number(topRaw) + (this.size/2) * this.vector.value
 
         this.player.style.top = `${nextPositionY}px`
         this.position.y = nextPositionY
@@ -87,14 +73,14 @@ class SnakePart {
 
     public moveHorizontal(): void {
         const leftRaw = this.player.style.left.substr(0, this.player.style.left.length-2)
-        const nextPositionX = Number(leftRaw) + (this.size /2) * this.speedMultX
+        const nextPositionX = Number(leftRaw) + (this.size /2) * this.vector.value
 
         this.player.style.left = `${nextPositionX}px`
         this.position.x = nextPositionX
     }
 
     public move(): void {
-        switch (this.direction) {
+        switch (this.vector.direction) {
             case Direction.Left: {
                 this.moveHorizontal()
                 if (this.getOffsetLeft() <= -this.size) {
@@ -130,7 +116,7 @@ class SnakePart {
     }
 
     private getMoveDirection(): number {
-        switch (this.direction) {
+        switch (this.vector.direction) {
             case Direction.Left:
             case Direction.Right: {
                 return window.innerWidth
@@ -141,39 +127,8 @@ class SnakePart {
             }
 
             default: {
-                console.log("underfined direction case", this.direction)
+                console.log("underfined direction case", this.vector)
                 return 0
-            }
-        }
-    }
-
-    private handleKeyboardMovementControl(e: KeyboardEvent): void {
-        switch(e.code) {
-            case Keyboard.Up: {
-                this.direction = Direction.Up
-                this.speedMultY = -1
-                break
-            }
-    
-            case Keyboard.Down: {
-                this.speedMultY = 1
-                this.direction = Direction.Down
-                break
-            }
-    
-            case Keyboard.Left: {
-                this.speedMultX = -1
-                this.direction = Direction.Left
-                break
-            }
-            case Keyboard.Right: {
-                this.speedMultX = 1
-                this.direction = Direction.Right
-                break
-            }
-            
-            default: {
-                console.log("undefined keyboard event")
             }
         }
     }
