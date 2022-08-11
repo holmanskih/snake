@@ -1,3 +1,4 @@
+import { List } from "./list.js";
 import { Direction, SnakePart } from "./snakePart.js";
 
 enum Keyboard {
@@ -28,13 +29,14 @@ export class Snake {
         direction: Direction.Right
     }
     
-    private parts: SnakePart[] = []
+    private parts: List;
 
     constructor(size: number, vector: VectorDirection) {
         this.size = size
 
         const initialPart = new SnakePart({x: 0, y: 0}, vector, size)
-        this.parts.push(initialPart)
+        this.parts = new List(initialPart)
+        // this.parts.push(initialPart)
 
         window.addEventListener('keydown', (e: KeyboardEvent) => this.onKeyDown(e))
     }
@@ -48,15 +50,15 @@ export class Snake {
     }
 
     public move(): void {
-        for(let i = 0; i < this.parts.length; i++) {
-            this.parts[i].move()
-        }
+        this.parts.iterate((part: SnakePart) => {
+            part.move()
+        })
     }
 
     private updateDirection(): void {
-        for(let i = 0; i < this.parts.length; i++) {
-            this.parts[i].vector = this.vector
-        }
+        this.parts.iterate((part: SnakePart) => {
+            part.vector = this.vector
+        })
     }
 
     public initRender(): void {
@@ -64,11 +66,11 @@ export class Snake {
     }
 
     private getTail(): SnakePart {
-        return this.parts[this.parts.length-1]
+        return this.parts.getTail()
     }
 
     private getHead(): SnakePart {
-        return this.parts[0]
+        return this.parts.getHead()
     }
 
     public getHeadPosition(): DOMRect {
