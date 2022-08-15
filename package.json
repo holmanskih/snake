@@ -1,0 +1,17 @@
+{
+  "name": "snake-js",
+  "version": "1.0.0",
+  "main": "./build/index.js",
+  "repository": "git@github.com:holmanskih/snake-js.git",
+  "author": "holmanskih <evg.holmanskih@gmail.com>",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev": "tsc -p ./tsconfig.json -w",
+    "test": "jest --verbose ./src"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.6",
+    "jest": "^28.1.3"
+  }
+}

@@ -90,10 +90,10 @@ class SnakePart {
             }
 
             case Direction.Right: {
-                this.moveHorizontal()
                 if (this.getOffsetLeft() >= this.getMoveDirection()) {
                     this.setXPosition(0)
                 }
+                this.moveHorizontal()
                 break
             }
             
