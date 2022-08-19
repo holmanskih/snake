@@ -1,6 +1,6 @@
-import { getScreenRatio } from "./utils.js";
-import { Position } from "./apple.js";
-import { VectorDirection } from "./snake.js";
+import { getScreenRatio } from "./utils";
+import { Position } from "./apple";
+import { VectorDirection } from "./snake";
 
 enum Direction {
     Right,
@@ -16,7 +16,7 @@ class SnakePart {
     private player: HTMLDivElement
 
     public constructor(position: Position, vector: VectorDirection, size: number) {
-        this.size = size * getScreenRatio() // scalable player size with dependency on the screen ratio
+        this.size = size * getScreenRatio() // TODO: scalable player size with dependency on the screen ratio
         this.vector = vector
         this.position = position
 
@@ -26,7 +26,7 @@ class SnakePart {
         this.player.style.width = `${size}px`
         this.player.style.height = `${size}px`
 
-        const rootElement = document.getElementById("game") as HTMLDivElement
+        const rootElement: HTMLDivElement = document.getElementById("game") as HTMLDivElement
         rootElement.appendChild(this.player)
     }
 

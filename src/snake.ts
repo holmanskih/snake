@@ -1,5 +1,5 @@
-import { List } from "./list.js";
-import { Direction, SnakePart } from "./part.js";
+import { List } from "./list";
+import { Direction, SnakePart } from "./part";
 
 enum Keyboard {
     Up = "KeyW",

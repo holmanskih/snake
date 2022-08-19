@@ -7,10 +7,10 @@ type Node = {
 }
 
 export class List {
-    private head: Node
-    private tail: Node
-    private len: number
-    private reverse: boolean
+    public head: Node
+    public tail: Node
+    public len: number
+    public reverse: boolean
 
     constructor(value: SnakePart) {
         this.head = {value: value}

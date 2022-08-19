@@ -1,6 +1,6 @@
-import {Apple} from "./apple.js"
-import { Snake, Vector, VectorDirection } from "./snake.js";
-import { Direction } from "./part.js";
+import {Apple} from "./apple"
+import { Snake, Vector, VectorDirection } from "./snake";
+import { Direction } from "./part";
 
 export class Game {
     private score: number;
