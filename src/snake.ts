@@ -29,7 +29,7 @@ export class Snake {
         direction: Direction.Right
     }
     
-    private parts: List;
+    public parts: List;
 
     constructor(size: number, vector: VectorDirection) {
         this.size = size

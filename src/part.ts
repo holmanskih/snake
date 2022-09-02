@@ -1,4 +1,3 @@
-import { getScreenRatio } from "./utils";
 import { Position } from "./apple";
 import { VectorDirection } from "./snake";
 
@@ -16,7 +15,7 @@ class SnakePart {
     private player: HTMLDivElement
 
     public constructor(position: Position, vector: VectorDirection, size: number) {
-        this.size = size * getScreenRatio() // TODO: scalable player size with dependency on the screen ratio
+        this.size = size
         this.vector = vector
         this.position = position
 

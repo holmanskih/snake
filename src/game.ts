@@ -1,8 +1,11 @@
 import {Apple} from "./apple"
 import { Snake, Vector, VectorDirection } from "./snake";
 import { Direction } from "./part";
+import { Screen } from "./screen";
 
 export class Game {
+    public screen: Screen;
+
     private score: number;
     private lastFrameTimeMs: number;
     private deltaFrameTimeMs: number;
@@ -11,10 +14,11 @@ export class Game {
     private gameWindow: HTMLDivElement;
     private startButton: HTMLButtonElement;
 
-    private snake: Snake;
+    public snake: Snake;
 
-    constructor(score: number, deltaFrameTimeMs: number) {
+    constructor(score: number, deltaFrameTimeMs: number, screen: Screen) {
         this.score = score
+        this.screen = screen
 
         // can be move to movePlayerAnimation
         this.lastFrameTimeMs = 0
