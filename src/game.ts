@@ -3,6 +3,7 @@ import { Snake, Vector, VectorDirection } from "./snake";
 import { Direction } from "./part";
 import { Screen } from "./screen";
 
+
 export class Game {
     public screen: Screen;
 
@@ -55,7 +56,7 @@ export class Game {
         const currFrameTimeMs = t
         if (currFrameTimeMs - this.lastFrameTimeMs >= this.deltaFrameTimeMs) {
             this.lastFrameTimeMs = t
-            this.snake.move()
+            this.snake.move(this.screen)
 
             // track apple collision with snake part
             const snakePosition = this.snake.getHeadPosition()

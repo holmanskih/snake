@@ -1,4 +1,5 @@
 import { Position } from "./apple";
+import { Screen } from "./screen";
 import { VectorDirection } from "./snake";
 
 enum Direction {
@@ -12,7 +13,7 @@ class SnakePart {
     public size: number;
     public vector: VectorDirection
     public readonly position: Position;
-    private player: HTMLDivElement
+    public player: HTMLDivElement
 
     public constructor(position: Position, vector: VectorDirection, size: number) {
         this.size = size
@@ -78,56 +79,46 @@ class SnakePart {
         this.position.x = nextPositionX
     }
 
-    public move(): void {
+    public move(screen: Screen): void {
         switch (this.vector.direction) {
             case Direction.Left: {
-                this.moveHorizontal()
                 if (this.getOffsetLeft() <= -this.size) {
-                    this.setXPosition(this.getMoveDirection())
+                    this.setXPosition(screen.getWidth())
+                    break
                 }
+
+                this.moveHorizontal()
                 break
             }
 
             case Direction.Right: {
-                if (this.getOffsetLeft() >= this.getMoveDirection()) {
+                if (this.getOffsetLeft() >= screen.getWidth()) {
                     this.setXPosition(0)
+                    break
                 }
+
                 this.moveHorizontal()
                 break
             }
             
             case Direction.Up: {
-                this.moveVertical()
                 if (this.getOffsetTop() <= -this.size) {
-                    this.setYPosition(this.getMoveDirection())
+                    this.setYPosition(screen.getHeight())
+                    break
                 }
-                break
-            }
 
-            case Direction.Down: {
                 this.moveVertical()
-                if (this.getOffsetLeft() === 0) {
-                    this.setYPosition(0)
-                }
                 break
             }
-        }
-    }
 
-    private getMoveDirection(): number {
-        switch (this.vector.direction) {
-            case Direction.Left:
-            case Direction.Right: {
-                return window.innerWidth
-            }
-            case Direction.Up:
             case Direction.Down: {
-                return window.innerHeight
-            }
+                if (this.getOffsetTop() >= screen.getHeight()) {
+                    this.setYPosition(0)
+                    break
+                }
 
-            default: {
-                console.log("underfined direction case", this.vector)
-                return 0
+                this.moveVertical()
+                break
             }
         }
     }

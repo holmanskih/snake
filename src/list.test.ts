@@ -43,3 +43,6 @@ const withSnakePart = (size: number): SnakePart => {
 
     return part
 }
+
+// TODO: add unit test for reverse linked list 
+// TODO: add reverse direction change for snake (check the bug on apple from tail and head with size >= 2)

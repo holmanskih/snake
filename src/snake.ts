@@ -1,5 +1,6 @@
 import { List } from "./list";
 import { Direction, SnakePart } from "./part";
+import { Screen } from "./screen";
 
 enum Keyboard {
     Up = "KeyW",
@@ -49,9 +50,9 @@ export class Snake {
         this.parts.push(growPart)
     }
 
-    public move(): void {
+    public move(screen: Screen): void {
         this.parts.iterate((part: SnakePart) => {
-            part.move()
+            part.move(screen)
         })
     }
 
@@ -74,7 +75,11 @@ export class Snake {
     }
 
     public getHeadPosition(): DOMRect {
-        return this.getHead().getPosition()
+        if(!this.parts.reverse) {
+            return this.getHead().getPosition()
+        } else {
+            return this.getTail().getPosition()
+        }
     }
 
     private onKeyDown(e: KeyboardEvent): void {
@@ -89,10 +94,12 @@ export class Snake {
             }
             case Keyboard.Left: {
                 this.vector = {value: Vector.Left, direction: Direction.Left}
+                this.parts.setReverse(true)
                 break
             }
             case Keyboard.Right: {
                 this.vector = {value: Vector.Right, direction: Direction.Right}
+                this.parts.setReverse(false)
                 break
             }
             default: {

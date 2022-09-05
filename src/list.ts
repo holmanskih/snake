@@ -1,4 +1,4 @@
-import { SnakePart } from "./part.js"
+import { SnakePart } from "./part"
 
 type Node = {
     value: SnakePart
@@ -10,6 +10,9 @@ export class List {
     public head: Node
     public tail: Node
     public len: number
+
+    // Adds reverse movement functionality for Part, when it moves
+    // in non standard way: up, left.
     public reverse: boolean
 
     constructor(value: SnakePart) {
@@ -21,17 +24,6 @@ export class List {
 
     public setReverse(value: boolean): void {
         this.reverse = value
-        
-        const tail = this.tail
-        const head = this.head
-
-        if(value == true) {
-            this.tail = head
-            this.head = tail
-        } else {
-            this.head = tail
-            this.tail = head
-        }
     }
 
     public push(value: SnakePart): void {
@@ -41,7 +33,6 @@ export class List {
         this.len += 1
         
         const head = this.head
-        console.log(head);
     }
 
     public getTail(): SnakePart {
@@ -53,11 +44,20 @@ export class List {
     }
 
     public iterate(f: (part: SnakePart) => void): void {
-        let el: Node | undefined = this.head
+        if(!this.reverse) {
+            let el: Node | undefined = this.head
 
-        while(el != undefined) {
-            f(el.value)
-            el = el.next
+            while(el != undefined) {
+                f(el.value)
+                el = el.next
+            }
+        } else {
+            let el: Node | undefined = this.tail
+
+            while(el != undefined) {
+                f(el.value)
+                el = el.prev
+            }
         }
     }
 }

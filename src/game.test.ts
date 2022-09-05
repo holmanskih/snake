@@ -6,11 +6,12 @@ test('move snake of length 2 in the right screen part', () => {
     withMockDom()
 
     const screen = new Screen(2000, 1000)
+
     const game = new Game(0, 200, screen)
     
     // set position for first part to width of the screen
-    game.snake.parts.getHead().setXPosition(window.innerWidth)
-    expect(game.snake.parts.getHead().position.x).toBe(window.innerWidth)
+    game.snake.parts.getHead().setXPosition(screen.getWidth())
+    expect(game.snake.parts.getHead().position.x).toBe(screen.getWidth())
     expect(game.snake.parts.getHead().position.y).toBe(0)
 
     game.snake.grow() // increase the snake length to size 2
@@ -29,15 +30,28 @@ test('move snake of length 2 in the right screen part', () => {
     game.snake.parts.getTail().vector.value = Vector.Left
     game.snake.parts.getTail().moveHorizontal()
 
-    console.log(window.innerWidth);
-    console.log(window.innerHeight);
+    // console.log(screen.getWidth());
+    // console.log(screen.getHeight());
     console.log(game.snake.parts.getHead().position)
     console.log(game.snake.parts.getTail().position)
 
 
     // todo: move window sizes to Size class sizes
+    
     // todo: move snake (first part behind the screen)
+    console.log(game.snake.parts.getHead().getOffsetLeft());
+    game.snake.parts.getHead().vector.value = Vector.Right
+    game.snake.parts.getTail().vector.value = Vector.Right
+    game.snake.move(screen)
+
     // todo: move snake (second part behind the screen)
+    console.log(game.snake.parts.getHead().player);
+    
+    console.log(game.snake.parts.getHead().getOffsetLeft());
+    
+    console.log(game.snake.parts.getHead().position)
+    console.log(game.snake.parts.getTail().position)
+
     // todo: move snake (first, second part from start of the screen)
 })
 
