@@ -1,8 +1,9 @@
 import { List } from "./list";
+import { Movement } from "./movement";
 import { Direction, SnakePart } from "./part";
 import { Screen } from "./screen";
 
-enum Keyboard {
+export enum Keyboard {
     Up = "KeyW",
     Right = "KeyD",
     Down = "KeyS",
@@ -23,16 +24,12 @@ export type VectorDirection = {
 
 export class Snake {
     private size: number;
-
-    // snake global direction, by default is right
-    private vector: VectorDirection = {
-        value: Vector.Right,
-        direction: Direction.Right
-    }
-    
     public parts: List;
+    private mov: Movement;
 
     constructor(size: number, vector: VectorDirection) {
+        this.mov = new Movement()
+
         this.size = size
 
         const initialPart = new SnakePart({x: 0, y: 0}, vector, size)
@@ -52,15 +49,19 @@ export class Snake {
 
     public move(screen: Screen): void {
         this.parts.iterate((part: SnakePart) => {
+            // check the snake length to turn the first part
+            if(this.parts.len > 1) {
+
+            }
             part.move(screen)
         })
     }
 
-    private updateDirection(): void {
-        this.parts.iterate((part: SnakePart) => {
-            part.vector = this.vector
-        })
-    }
+    // private updateDirection(): void {
+    //     this.parts.iterate((part: SnakePart) => {
+    //         part.vector = this.vector
+    //     })
+    // }
 
     public initRender(): void {
         this.getHead().initRender()
@@ -83,30 +84,20 @@ export class Snake {
     }
 
     private onKeyDown(e: KeyboardEvent): void {
+        const turnPoint = this.getHead().position
+        this.mov.turn(e.code as Keyboard, turnPoint)
+
         switch(e.code) {
-            case Keyboard.Up: {
-                this.vector = {value: Vector.Up, direction: Direction.Up}
-                break
-            }
-            case Keyboard.Down: {
-                this.vector = {value: Vector.Down, direction: Direction.Down}
-                break
-            }
             case Keyboard.Left: {
-                this.vector = {value: Vector.Left, direction: Direction.Left}
                 this.parts.setReverse(true)
                 break
             }
             case Keyboard.Right: {
-                this.vector = {value: Vector.Right, direction: Direction.Right}
                 this.parts.setReverse(false)
                 break
             }
-            default: {
-                console.log("undefined keyboard event")
-            }
         }
 
-        this.updateDirection()
+        // this.updateDirection()
     }
 }
