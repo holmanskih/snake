@@ -49,11 +49,7 @@ export class Snake {
 
     public move(screen: Screen): void {
         this.parts.iterate((part: SnakePart) => {
-            // check the snake length to turn the first part
-            if(this.parts.len > 1) {
-
-            }
-            part.move(screen)
+            this.mov.move(part, screen)
         })
     }
 
@@ -85,7 +81,7 @@ export class Snake {
 
     private onKeyDown(e: KeyboardEvent): void {
         const turnPoint = this.getHead().position
-        this.mov.turn(e.code as Keyboard, turnPoint)
+        this.mov.turn(e.code as Keyboard, turnPoint, this.parts.len)
 
         switch(e.code) {
             case Keyboard.Left: {

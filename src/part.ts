@@ -1,6 +1,6 @@
 import { Position } from "./apple";
 import { Screen } from "./screen";
-import { VectorDirection } from "./snake";
+import { Vector, VectorDirection } from "./snake";
 
 enum Direction {
     Right,
@@ -79,8 +79,39 @@ class SnakePart {
         this.position.x = nextPositionX
     }
 
-    public move(screen: Screen): void {
-        switch (this.vector.direction) {
+    public move(screen: Screen, direction?: Direction): void {
+        let dir = this.vector.direction
+
+        if(direction !== undefined) {
+            dir = direction
+
+            // todo: use this logic as common for part.ts and movement.ts
+            switch(direction) {
+                case Direction.Up: {
+                    this.vector = {value: Vector.Up, direction: Direction.Up}
+                    break
+                }
+                case Direction.Down: {
+                    this.vector = {value: Vector.Down, direction: Direction.Down}
+                    break
+                }
+                case Direction.Left: {
+                    this.vector = {value: Vector.Left, direction: Direction.Left}
+                    break
+                }
+                case Direction.Right: {
+                    this.vector = {value: Vector.Right, direction: Direction.Right}
+                    break
+                }
+                default: {
+                    console.log("undefined keyboard event")
+                }
+            }
+
+            this.vector.direction = direction
+        }
+
+        switch (dir) {
             case Direction.Left: {
                 if (this.getOffsetLeft() <= -this.size) {
                     this.setXPosition(screen.getWidth())
