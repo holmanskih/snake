@@ -48,8 +48,11 @@ export class Snake {
     }
 
     public move(screen: Screen): void {
+        let i = 0
         this.parts.iterate((part: SnakePart) => {
+            console.log(`index: ${i} pos x ${part.position.x} y ${part.position.y}`)
             this.mov.move(part, screen)
+            i++
         })
     }
 

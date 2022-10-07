@@ -100,8 +100,11 @@ export class Movement {
     }
 
     public move(part: SnakePart, screen: Screen) {
-        const partPos = part.getPosition()
+        const partPos = part.position
 
+        if(this.turns.length >0) {
+            debugger
+        }
         // check if part position is the same as turn position.
         // if it is true, move the part by turn direction.
         // each part can have only one turn point.
@@ -113,7 +116,7 @@ export class Movement {
 
                 const zeroTurn = this.turns[i].decreaseN()
                 if(zeroTurn) {
-                    this.turns.splice(i, 1)
+                    this.turns.splice(i, 1) // todo: doesnt work when the n = 0
                 }
                 return
             }

@@ -12,7 +12,7 @@ enum Direction {
 class SnakePart {
     public size: number;
     public vector: VectorDirection
-    public readonly position: Position;
+    public readonly position: Position; // set this data by setter ad get by getter to avoid reference usage
     public player: HTMLDivElement
 
     public constructor(position: Position, vector: VectorDirection, size: number) {
@@ -69,6 +69,7 @@ class SnakePart {
 
         this.player.style.top = `${nextPositionY}px`
         this.position.y = nextPositionY
+        console.log(`pos y ${this.position.y}`);
     }
 
     public moveHorizontal(): void {
