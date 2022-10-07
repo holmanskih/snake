@@ -34,6 +34,9 @@ button {
 }
 
 .game__window-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
 }
 
@@ -86,4 +89,14 @@ button {
     position: absolute;
     right: 20px;
     top: 20px;
+}
+
+/* sound */
+.sound {
+    width: 100%;
+}
+
+.sound__container {
+    width: 50%;
+    margin-bottom: 50px;
 }

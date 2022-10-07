@@ -2,6 +2,7 @@ import {Apple} from "./apple"
 import { Snake, Vector, VectorDirection } from "./snake";
 import { Direction } from "./part";
 import { Screen } from "./screen";
+import { AudioManager } from "./audio_manager";
 
 
 export class Game {
@@ -14,6 +15,7 @@ export class Game {
     private scoreElem: HTMLDivElement;
     private gameWindow: HTMLDivElement;
     private startButton: HTMLButtonElement;
+    private soundInputElem: HTMLInputElement;
 
     public snake: Snake;
 
@@ -28,7 +30,10 @@ export class Game {
         this.scoreElem = document.getElementById("score") as HTMLDivElement
         this.gameWindow = document.getElementById("game-window") as HTMLDivElement
         this.startButton = document.getElementById("start-button") as HTMLButtonElement
+        this.soundInputElem = document.getElementById("sound-input") as HTMLInputElement
+
         this.startButton.addEventListener('click', () => this.start())
+        this.soundInputElem.addEventListener('change', (e) => this.onSoundInputChange(e))
 
         // snake player
         const initSnakeDirection: VectorDirection = {
@@ -38,7 +43,14 @@ export class Game {
         this.snake = new Snake(100, initSnakeDirection)
     }
 
+    // todo: add event type
+    private onSoundInputChange = (e: any): void => {
+        const value = Number(e.target.value)
+        AudioManager.getInstance().setVolume(value)
+    }
+
     private start(): void {
+        AudioManager.getInstance().play("sound.wav")
         this.closeGameWindow()
         this.renderPlayer()
     }
