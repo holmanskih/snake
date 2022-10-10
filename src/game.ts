@@ -3,37 +3,38 @@ import { Snake, Vector, VectorDirection } from "./snake";
 import { Direction } from "./part";
 import { Screen } from "./screen";
 import { AudioManager } from "./audio_manager";
+import { SOUND_CLICK, SOUND_OBSTACLE } from "./constants";
+import { UIControl } from "./ui/control";
 
 
 export class Game {
     public screen: Screen;
 
-    private score: number;
     private lastFrameTimeMs: number;
     private deltaFrameTimeMs: number;
 
-    private scoreElem: HTMLDivElement;
     private gameWindow: HTMLDivElement;
     private startButton: HTMLButtonElement;
     private soundInputElem: HTMLInputElement;
 
+    private uiControl: UIControl;
     public snake: Snake;
 
-    constructor(score: number, deltaFrameTimeMs: number, screen: Screen) {
-        this.score = score
+    constructor(deltaFrameTimeMs: number, screen: Screen) {
         this.screen = screen
 
         // can be move to movePlayerAnimation
         this.lastFrameTimeMs = 0
         this.deltaFrameTimeMs = deltaFrameTimeMs
 
-        this.scoreElem = document.getElementById("score") as HTMLDivElement
         this.gameWindow = document.getElementById("game-window") as HTMLDivElement
         this.startButton = document.getElementById("start-button") as HTMLButtonElement
         this.soundInputElem = document.getElementById("sound-input") as HTMLInputElement
 
         this.startButton.addEventListener('click', () => this.start())
         this.soundInputElem.addEventListener('change', (e) => this.onSoundInputChange(e))
+
+        this.uiControl = new UIControl()
 
         // snake player
         const initSnakeDirection: VectorDirection = {
@@ -50,8 +51,11 @@ export class Game {
     }
 
     private start(): void {
-        AudioManager.getInstance().play("sound.wav")
+        AudioManager.getInstance().play(SOUND_CLICK)
         this.closeGameWindow()
+
+        // render
+        this.uiControl.render()
         this.renderPlayer()
     }
 
@@ -72,13 +76,13 @@ export class Game {
 
             // track apple collision with snake part
             const snakePosition = this.snake.getHeadPosition()
-            this.spawnApple(snakePosition)
+            this.checkCollision(snakePosition)
         }
         
         window.requestAnimationFrame((f) => this.movePlayerAnimation(f));
     }
 
-    private spawnApple(snakePosition: DOMRect): void {
+    private checkCollision(snakePosition: DOMRect): void {
         const l1 = { x: snakePosition.top, y: snakePosition.right }
         const r1 = { x: snakePosition.bottom, y: snakePosition.left }
 
@@ -86,6 +90,7 @@ export class Game {
 
         if(apple.isExist()) {
             if(apple.collides(r1, l1)) {
+                AudioManager.getInstance().play(SOUND_OBSTACLE)
                 this.respawnApple(apple)
                 this.snake.grow()
             }
@@ -94,16 +99,9 @@ export class Game {
         }
     }
 
-
-
     private respawnApple(currentApple: Apple) {
         currentApple.remove()
-        this.updateScore()
+        this.uiControl.updateScore()
         currentApple.spawn()
-    }
-
-    private updateScore() {
-        this.score++
-        this.scoreElem.innerText = this.score.toString()
     }
 }

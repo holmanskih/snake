@@ -52,10 +52,18 @@ button {
     font-family: 'Russo One', sans-serif;
     font-size: 50px;
     font-weight: 800;
-    padding: 30px 60px;
+   
     background-color: #ffd61e;
     border: 5px solid #000;
     color: #000;
+}
+
+.game__window-button--b { /* big */
+    padding: 30px 60px;
+}
+
+.game__window-button--s { /* small */
+    padding: 5px 15px;
 }
 
 .player {
@@ -79,7 +87,21 @@ button {
     bottom: 50%; */
 }
 
-/* ui */
+/* game control */
+.game-control {
+    visibility: hidden;
+}
+
+.game-control__button {
+    margin: 8px 15px;
+    background-color: #fff;
+    font-size: 50px;
+    font-family: 'Russo One', sans-serif;
+    font-weight: 800;
+
+    z-index: 999;
+}
+
 .score {
     font-size: 50px;
     font-family: 'Russo One', sans-serif;

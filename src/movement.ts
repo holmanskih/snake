@@ -102,9 +102,9 @@ export class Movement {
     public move(part: SnakePart, screen: Screen) {
         const partPos = part.position
 
-        if(this.turns.length >0) {
-            debugger
-        }
+        // if(this.turns.length >0) {
+        //     debugger
+        // }
         // check if part position is the same as turn position.
         // if it is true, move the part by turn direction.
         // each part can have only one turn point.

@@ -21,18 +21,15 @@
                 <div class="sound__container">
                     <input id="sound-input" class="sound" type="range" min="0" max="1" step="0.1" />
                 </div>
-                <button id="start-button" class="game__window-button">Start</button>
+                <button id="start-button" class="game__window-button game__window-button--b">Start</button>
             </div>
         </div>
-        <!-- <div id="player" class="player"></div> -->
-       <div class="score">
-           Score: <span id="score">0</span>
-       </div>
+        <div id="game-control" class="game-control">
+            <button id="pause-btn" class="game__window-button game__window-button--s" type="button">Pause</button>
+            <div class="score">
+                Score: <span id="score">0</span>
+            </div>
+        </div>
     </div>
     <script type="module" src="./bundle.js"></script>
-    <!-- <script type="module" src="./game.js"></script> -->
-    <!-- <script type="module" src="./apple.js"></script> -->
-    <!-- <script type="module" src="./snake.js"></script> -->
-    <!-- <script type="module" src="./collectable.js"></script> -->
-    <!-- <script src="collision.js"></script> -->
 </body>
