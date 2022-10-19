@@ -6,8 +6,14 @@ import { AudioManager } from "./audio_manager";
 import { SOUND_CLICK, SOUND_OBSTACLE } from "./constants";
 import { UIControl } from "./ui/control";
 
+enum GameState {
+    Resume,
+    Pause,
+}
 
 export class Game {
+    private state: GameState = GameState.Resume
+
     public screen: Screen;
 
     private lastFrameTimeMs: number;
@@ -34,7 +40,7 @@ export class Game {
         this.startButton.addEventListener('click', () => this.start())
         this.soundInputElem.addEventListener('change', (e) => this.onSoundInputChange(e))
 
-        this.uiControl = new UIControl()
+        this.uiControl = new UIControl(() => this.pause())
 
         // snake player
         const initSnakeDirection: VectorDirection = {
@@ -42,6 +48,10 @@ export class Game {
             direction: Direction.Right
         }
         this.snake = new Snake(100, initSnakeDirection)
+    }
+
+    private pause(): void {
+        this.state = (this.state == GameState.Resume) ? GameState.Pause : GameState.Resume
     }
 
     // todo: add event type
@@ -69,14 +79,16 @@ export class Game {
     }
 
     private movePlayerAnimation(t: DOMHighResTimeStamp): void {
-        const currFrameTimeMs = t
-        if (currFrameTimeMs - this.lastFrameTimeMs >= this.deltaFrameTimeMs) {
-            this.lastFrameTimeMs = t
-            this.snake.move(this.screen)
+        if(this.state == GameState.Resume) {
+            const currFrameTimeMs = t
+            if (currFrameTimeMs - this.lastFrameTimeMs >= this.deltaFrameTimeMs) {
+                this.lastFrameTimeMs = t
+                this.snake.move(this.screen)
 
-            // track apple collision with snake part
-            const snakePosition = this.snake.getHeadPosition()
-            this.checkCollision(snakePosition)
+                // track apple collision with snake part
+                const snakePosition = this.snake.getHeadPosition()
+                this.checkCollision(snakePosition)
+            }
         }
         
         window.requestAnimationFrame((f) => this.movePlayerAnimation(f));

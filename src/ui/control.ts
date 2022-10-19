@@ -6,10 +6,12 @@ export class UIControl {
 
     private score: number = 0
 
-    constructor() {
+    constructor(pauseCallback: () => void) {
         this.gameControlElem = document.getElementById("game-control") as HTMLDivElement
         this.scoreElem = document.getElementById("score") as HTMLDivElement
         this.pauseButtonElem = document.getElementById("pause-btn") as HTMLButtonElement
+
+        this.pauseButtonElem.addEventListener('click', () => this.onPauseClick(pauseCallback))
     }
 
     public render() {
@@ -19,5 +21,9 @@ export class UIControl {
     public updateScore() {
         this.score++
         this.scoreElem.innerText = this.score.toString()
+    }
+
+    private onPauseClick(pauseCallback: () => void) {
+        pauseCallback()
     }
 }

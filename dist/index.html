@@ -15,6 +15,8 @@
 
 <body>
     <div id="game" class="game">
+        
+         <!-- controled by js -->
         <div id="game-window" class="game__window">
             <div class="game__window-content">
                 <h1 class="game__window-title">Start the game</h1>
@@ -24,12 +26,17 @@
                 <button id="start-button" class="game__window-button game__window-button--b">Start</button>
             </div>
         </div>
+
         <div id="game-control" class="game-control">
             <button id="pause-btn" class="game__window-button game__window-button--s" type="button">Pause</button>
             <div class="score">
                 Score: <span id="score">0</span>
             </div>
         </div>
+
+        <!-- controled by js -->
+        <div id="game-field" class="game-field"></div>
+            
     </div>
     <script type="module" src="./bundle.js"></script>
 </body>

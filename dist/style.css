@@ -66,6 +66,14 @@ button {
     padding: 5px 15px;
 }
 
+/* field */
+.game-field {
+    /* 
+    TODO: change styles .game -> .game-field 
+    for snake bounded movement 
+    */
+}
+
 .player {
     z-index: 2;
     background-color: #ffd61e;
@@ -89,6 +97,8 @@ button {
 
 /* game control */
 .game-control {
+    padding: 20px;
+    background-color: #39aa3f;
     visibility: hidden;
 }
 
@@ -104,13 +114,14 @@ button {
 
 .score {
     font-size: 50px;
+    line-height: 50px;
     font-family: 'Russo One', sans-serif;
     font-weight: 800;
     color: #fff;
     z-index: 999;
     position: absolute;
     right: 20px;
-    top: 20px;
+    top: 40px;
 }
 
 /* sound */
